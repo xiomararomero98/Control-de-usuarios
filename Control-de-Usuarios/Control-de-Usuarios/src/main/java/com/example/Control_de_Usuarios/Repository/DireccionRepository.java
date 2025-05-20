@@ -1,5 +1,11 @@
 package com.example.Control_de_Usuarios.Repository;
 
-public interface DireccionRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.Control_de_Usuarios.Model.Direccion;
+
+@Repository
+public interface DireccionRepository extends JpaRepository<Direccion, Long> {
 
 }

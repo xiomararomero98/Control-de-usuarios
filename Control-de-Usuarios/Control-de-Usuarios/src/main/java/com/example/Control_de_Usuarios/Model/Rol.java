@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "rol")
+@Table(name = "Rol")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -24,7 +24,8 @@ public class Rol {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_rol;
+    @Column(name = "id_rol")
+    private Long id;
     
 
 
@@ -32,9 +33,15 @@ public class Rol {
     private String nombre;
 
 
-    //identificar relacion
+    //identificar relacion con usuarios
     @OneToMany(mappedBy = "rol", cascade =CascadeType.ALL)
     @JsonIgnore
     private List <Usuario> users;
+
+    //identificar relacion con permisos
+
+    @OneToMany(mappedBy = "rol", cascade =CascadeType.ALL)
+    @JsonIgnore
+    private List <Permisos> permisos;
 
 }

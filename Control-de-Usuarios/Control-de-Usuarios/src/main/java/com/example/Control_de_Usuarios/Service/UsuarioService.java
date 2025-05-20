@@ -1,11 +1,111 @@
 package com.example.Control_de_Usuarios.Service;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.Control_de_Usuarios.Model.Rol;
+import com.example.Control_de_Usuarios.Model.Usuario;
+import com.example.Control_de_Usuarios.Repository.ComunaRepository;
+import com.example.Control_de_Usuarios.Repository.DireccionRepository;
+import com.example.Control_de_Usuarios.Repository.PermisosRepository;
+import com.example.Control_de_Usuarios.Repository.PrivilegiosRepository;
+import com.example.Control_de_Usuarios.Repository.RegionRepository;
+import com.example.Control_de_Usuarios.Repository.RolRepository;
+import com.example.Control_de_Usuarios.Repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 @Transactional //permite hacer un rollback en caso de que la accion en la BD falle
 public class UsuarioService {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private RolRepository rolRepository;
+
+    @Autowired
+    private PrivilegiosRepository privilegiosRepository;
+
+    @Autowired
+    private PermisosRepository permisosRepository;
+
+    @Autowired
+    private DireccionRepository direccionRepository;
+
+    @Autowired
+    private ComunaRepository comunaRepository;
+
+    @Autowired
+    private RegionRepository regionRepository;
+
+
+    //Obtener todos los usuarios 
+
+    public List<Usuario> obtenerUsuarios(){
+        return usuarioRepository.findAll();
+    }
+
+
+    //Obtener usuarios por Id 
+
+    public Optional<Usuario> obtenerUsuarioPorId(Long id){
+        return usuarioRepository.findById(id);
+    }
+
+
+    //metodo para agregar un Usuario
+
+    public Usuario crearUsuario(String nombre, String apellido, String correo, String clave, Long idRol){
+
+        Rol rol =rolRepository.findById(idRol)
+        .orElseThrow(()->new RuntimeException("Rol no existe con ID:"+ idRol));
+
+        Usuario usuario = new Usuario();
+        
+        usuario.setNombre(nombre);
+        usuario.setApellido(apellido);
+        usuario.setClave(clave);
+        usuario.setCorreo(correo);
+        usuario.setRol(rol);
+        usuario.setFecha_creacion(new Date()); //fecha de creacion actual
+
+        return usuarioRepository.save(usuario);
+
+    }
+
+    //Eliminar usuario por Id 
+
+    public void eliminarUsuario(Long id){
+        usuarioRepository.deleteById(id);
+    }
+
+    //actualizar un usuario existente
+
+    public Optional<Usuario>actualizarUsuario(Long id, Usuario usuarioActualizado){
+        return usuarioRepository.findById(id).map(usuario ->{
+            usuario.setNombre(usuarioActualizado.getNombre());
+            usuario.setApellido(usuarioActualizado.getApellido());
+            usuario.setCorreo(usuarioActualizado.getCorreo());
+            usuario.setClave(usuarioActualizado.getClave());
+            usuario.setFecha_creacion(usuarioActualizado.getFecha_creacion());
+            usuario.setRol(usuarioActualizado.getRol());
+            return usuarioRepository.save(usuario);
+        });
+    }
+
+
+
+
+
+
+
+
+
 
 }

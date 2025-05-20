@@ -1,9 +1,11 @@
 package com.example.Control_de_Usuarios.Model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,13 +13,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="usuarios")
+@Table(name="Usuarios")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -26,7 +29,8 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_usuarios;
+    @Column(name = "id_usuarios")
+    private Long id;
 
 
     @Column
@@ -41,14 +45,19 @@ public class Usuario {
 
     @Column
     private String clave;
-    @Column
+
+
+    @Column(name = "fecha_creacion", nullable = false)
     private Date fecha_creacion;
 
     //Identificar tipo de relacion existente
     @ManyToOne //Tipo de relacion
-    @JoinColumn(name="id_rol")
+    @JoinColumn(name="Rol_id_rol")
     @JsonIgnoreProperties("usuarios")
     private Rol rol;
+    //relacion con direccion
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Direccion> direcciones;
 
 
 }
