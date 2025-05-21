@@ -42,7 +42,7 @@ public class RolService {
 
     //metodo para actualizar un rol existente por id
 
-    public Rol actualizaRol(Long id, Rol rolActualizado){
+    public Rol actualizarRol(Long id, Rol rolActualizado){
         Rol rolExistente= rolRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Rol no encontrado con ID" + id));
 

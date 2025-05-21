@@ -78,6 +78,9 @@ public class DireccionService {
     //eliminar una direccion por id
 
     public void eliminarDireccionPorId (Long id){
+    if (!direccionRepository.existsById(id)) {
+        throw new RuntimeException("Direccion no encontrada con ID:"+id);
+        }
         direccionRepository.deleteById(id);
     }
 

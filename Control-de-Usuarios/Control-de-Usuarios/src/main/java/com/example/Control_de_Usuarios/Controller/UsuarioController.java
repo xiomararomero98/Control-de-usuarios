@@ -27,6 +27,8 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     //obtener todos los usuarios
+
+    @GetMapping
     public ResponseEntity<List<Usuario>>obtenerUsuarios(){
         List<Usuario> usuarios = usuarioService.obtenerUsuarios();
         if (usuarios.isEmpty()) {
@@ -37,7 +39,7 @@ public class UsuarioController {
     }
 
     //obtener usuarios por Id
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Usuario> obtenerUsuarioPorId(@PathVariable Long id){
         Optional <Usuario> usuario = usuarioService.obtenerUsuarioPorId(id);
         if (usuario.isEmpty()) {
@@ -48,19 +50,19 @@ public class UsuarioController {
     }
 
     //crear un nuevo usuario
-    @PostMapping("/users")
-    public ResponseEntity<?> crearUsuario(
-        @RequestParam String nombre,
-        @RequestParam String apellido,
-        @RequestParam String correo,
-        @RequestParam String clave,
-        @RequestParam Long roleId
-        ){
+    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario){
         try {
-            Usuario userNuevo = usuarioService.crearUsuario(nombre, apellido, correo, clave, roleId);
+            Long idRol= usuario.getRol().getId(); //accede al id del rol
+            Usuario userNuevo= usuarioService.crearUsuario(
+                usuario.getNombre(),
+                usuario.getApellido(),
+                usuario.getCorreo(),
+                usuario.getClave(),
+                idRol
+            );
             return ResponseEntity.status(HttpStatus.CREATED).body(userNuevo);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 

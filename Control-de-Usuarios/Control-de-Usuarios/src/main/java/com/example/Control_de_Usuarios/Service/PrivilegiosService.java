@@ -42,6 +42,14 @@ public class PrivilegiosService {
 
     //Actualizar un privilegio existente
 
+    public Privilegios actualizarPrivilegio(Long id, Privilegios privilegioActualizado){
+        Privilegios privilegioExistente = privilegiosRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Privilegio no ecnontrado con ID:"+ id));
+        
+        privilegioExistente.setNombre(privilegioActualizado.getNombre());
+        return privilegiosRepository.save(privilegioExistente);
+    }
+
 
 
 

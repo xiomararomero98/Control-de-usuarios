@@ -52,4 +52,9 @@ public class PermisosService {
         return permisosRepository.save(permisoExistente);
     }
 
+    //metodo para eliminar permisos por Id
+    public void eliminarPermisoPorId(Long id){
+        permisosRepository.deleteById(id);
+    }
+
 }

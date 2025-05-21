@@ -28,4 +28,8 @@ public class Permisos {
     @ManyToOne
     @JoinColumn(name = "Privilegios_id_privilegios", nullable = false)
     private Privilegios privilegio;
+
+    @ManyToOne
+    @JoinColumn(name = "Rol_id_rol", nullable = false)
+    private Rol rol;
 }

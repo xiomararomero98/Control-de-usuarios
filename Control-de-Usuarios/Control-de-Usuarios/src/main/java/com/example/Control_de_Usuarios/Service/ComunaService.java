@@ -20,6 +20,7 @@ public class ComunaService {
     @Autowired
     private ComunaRepository comunaRepository;
 
+    @Autowired
     private RegionRepository regionRepository;
 
     //obtener todas las comunas 
@@ -52,8 +53,18 @@ public class ComunaService {
 
     //Actualizar comuna 
 
-    public Optional <Comuna> actualizarComuna(Long id, Comuna comunaActualizada){
-        return comunaRepository.findById(id)
+    public Comuna actualizarComuna(Long id, Comuna comunaActualizada){
+        Optional <Comuna> optionalComuna = comunaRepository.findById(id);
+        if (optionalComuna.isPresent()) {
+            Comuna comunaExistente = optionalComuna.get();
+            comunaExistente.setNombre(comunaActualizada.getNombre());
+            comunaExistente.setRegion(comunaActualizada.getRegion());
+            return comunaRepository.save(comunaExistente);
+            
+        } else {
+            throw new RuntimeException("Comuna no encontrada con ID:"+id);
+            
+        }
     }
 
 

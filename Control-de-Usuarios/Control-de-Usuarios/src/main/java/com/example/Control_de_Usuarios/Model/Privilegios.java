@@ -29,7 +29,7 @@ public class Privilegios {
     @Column(nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "prvilegio")
+    @OneToMany(mappedBy = "privilegio")
     private List <Permisos> permisos;
 
 }
