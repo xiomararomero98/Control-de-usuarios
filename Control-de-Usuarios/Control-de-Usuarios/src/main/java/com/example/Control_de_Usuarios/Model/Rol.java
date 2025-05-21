@@ -44,4 +44,11 @@ public class Rol {
     @JsonIgnore
     private List <Permisos> permisos;
 
+    //carga de datos
+
+    public Rol(Long id, String nombre){
+        this.id =id;
+        this.nombre= nombre;
+    }
+
 }

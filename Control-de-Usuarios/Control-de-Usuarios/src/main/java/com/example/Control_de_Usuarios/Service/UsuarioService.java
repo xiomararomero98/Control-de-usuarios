@@ -88,24 +88,29 @@ public class UsuarioService {
     //actualizar un usuario existente
 
     public Optional<Usuario>actualizarUsuario(Long id, Usuario usuarioActualizado){
-        return usuarioRepository.findById(id).map(usuario ->{
+        Optional <Usuario> optionalUsuario = usuarioRepository.findById(id);
+
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+
             usuario.setNombre(usuarioActualizado.getNombre());
             usuario.setApellido(usuarioActualizado.getApellido());
             usuario.setCorreo(usuarioActualizado.getCorreo());
             usuario.setClave(usuarioActualizado.getClave());
-            usuario.setFecha_creacion(usuarioActualizado.getFecha_creacion());
-            usuario.setRol(usuarioActualizado.getRol());
-            return usuarioRepository.save(usuario);
-        });
+            
+            Rol rol = rolRepository.findById(usuarioActualizado.getRol().getId())
+                .orElseThrow(()-> new RuntimeException("Rol no encontrado con ID:"+ usuarioActualizado.getRol().getId()));
+            usuario.setRol(rol);
+
+            usuarioRepository.save(usuario);
+            
+        }
+        return optionalUsuario;
+           
+        }
     }
 
 
 
 
 
-
-
-
-
-
-}

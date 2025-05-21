@@ -70,13 +70,17 @@ public class UsuarioController {
     //actualizar un usuario
     @PutMapping("/{id}")
     public ResponseEntity<?>actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado){
-        Optional <Usuario> usuario =usuarioService.actualizarUsuario(id, usuarioActualizado);
-        if (usuario.isPresent()) {
-            return ResponseEntity.ok(usuario.get());
-            
-        } else {
-            return ResponseEntity.notFound().build();
-            
+        try {
+             Optional <Usuario> usuario =usuarioService.actualizarUsuario(id, usuarioActualizado);
+            if (usuario.isPresent()) {
+                return ResponseEntity.ok(usuario.get());
+                
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado con ID"+id);
+                
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el usuario"+ e.getMessage());
         }
     }
 
