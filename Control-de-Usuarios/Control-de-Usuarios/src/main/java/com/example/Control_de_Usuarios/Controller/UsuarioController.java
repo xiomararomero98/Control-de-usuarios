@@ -50,6 +50,7 @@ public class UsuarioController {
     }
 
     //crear un nuevo usuario
+    @PostMapping
     public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario){
         try {
             Long idRol= usuario.getRol().getId(); //accede al id del rol
