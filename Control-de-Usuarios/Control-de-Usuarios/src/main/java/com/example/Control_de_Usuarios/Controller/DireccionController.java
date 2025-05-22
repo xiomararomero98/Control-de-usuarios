@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Control_de_Usuarios.Model.Direccion;
@@ -52,22 +51,16 @@ public class DireccionController {
     }
     //Crear direccion
     @PostMapping
-    public ResponseEntity<?> crearDireccion(
-    @RequestParam String calle,
-    @RequestParam Integer numeracion,
-    @RequestParam(required = false) Integer numeroDepartamento,
-    @RequestParam(required = false) String torre,
-    @RequestParam Long idUsuario,
-    @RequestParam Long idComuna) {
+    public ResponseEntity<?> crearDireccion(@RequestBody Direccion direccion) {
     try {
-        Direccion nueva = direccionService.crearDireccion(
-            calle, numeracion, numeroDepartamento, torre, idUsuario, idComuna
-        );
+        Direccion nueva = direccionService.crearDireccion(direccion);
         return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
     } catch (RuntimeException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
+
+
     //Actualizar direccion
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarDireccion(@PathVariable Long id, @RequestBody Direccion datos){

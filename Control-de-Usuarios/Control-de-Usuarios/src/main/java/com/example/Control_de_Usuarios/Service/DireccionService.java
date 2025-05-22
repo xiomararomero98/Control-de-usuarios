@@ -40,27 +40,23 @@ public class DireccionService {
     }
 
     //crear una nueva direccion
-    public Direccion crearDireccion(
-        String calle, 
-        Integer numeracion, 
-        Integer numeroDepartamento,
-        String torre,
-        Long idUsuario, 
-        Long idComuna){
-        Usuario usuario= usuarioRepository.findById(idUsuario).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        Comuna comuna = comunaRepository.findById(idComuna).orElseThrow(() -> new RuntimeException("Comuna no encontrada"));
+    public Direccion crearDireccion(Direccion direccion) {
+    Long idUsuario = direccion.getUsuario().getId();
+    Long idComuna = direccion.getComuna().getId();
 
-        Direccion direccion = new Direccion();
-        direccion.setCalle(calle);
-        direccion.setComuna(comuna);
-        direccion.setNumeracion(numeracion);
-        direccion.setNumeroDepartamento(numeroDepartamento);
-        direccion.setTorre(torre);
-        direccion.setUsuario(usuario);
-        
-        return direccionRepository.save(direccion);
-    }
+    Usuario usuario = usuarioRepository.findById(idUsuario)
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + idUsuario));
+
+    Comuna comuna = comunaRepository.findById(idComuna)
+        .orElseThrow(() -> new RuntimeException("Comuna no encontrada con ID: " + idComuna));
+
+    direccion.setUsuario(usuario);
+    direccion.setComuna(comuna);
+
+    return direccionRepository.save(direccion);
+}
+
     // actualizar una direccion 
     public Direccion actualizarDireccion(Long id, Direccion datos){
         Direccion existente= direccionRepository.findById(id)
