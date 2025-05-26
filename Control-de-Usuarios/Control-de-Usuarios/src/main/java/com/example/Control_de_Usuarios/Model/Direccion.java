@@ -47,6 +47,7 @@ public class Direccion {
 
     @ManyToOne
     @JoinColumn(name = "Comuna_id_comuna", nullable = false)
+    @JsonBackReference
     private Comuna comuna;
 
 }

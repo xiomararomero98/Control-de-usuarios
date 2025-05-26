@@ -2,6 +2,8 @@ package com.example.Control_de_Usuarios.Model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +37,7 @@ public class Comuna {
     private Region region;
 
     @OneToMany(mappedBy = "comuna")
+    @JsonManagedReference
     private List<Direccion> direcciones;
 
 }

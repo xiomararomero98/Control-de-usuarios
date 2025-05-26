@@ -87,27 +87,33 @@ public class UsuarioService {
 
     //actualizar un usuario existente
 
-    public Optional<Usuario>actualizarUsuario(Long id, Usuario usuarioActualizado){
-        Optional <Usuario> optionalUsuario = usuarioRepository.findById(id);
+   public Optional<Usuario> actualizarUsuario(Long id, Usuario usuarioActualizado) {
+    Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
 
-        if (optionalUsuario.isPresent()) {
-            Usuario usuario = optionalUsuario.get();
+    if (optionalUsuario.isPresent()) {
+        Usuario usuario = optionalUsuario.get();
 
-            usuario.setNombre(usuarioActualizado.getNombre());
-            usuario.setApellido(usuarioActualizado.getApellido());
-            usuario.setCorreo(usuarioActualizado.getCorreo());
-            usuario.setClave(usuarioActualizado.getClave());
-            
-            Rol rol = rolRepository.findById(usuarioActualizado.getRol().getId())
-                .orElseThrow(()-> new RuntimeException("Rol no encontrado con ID:"+ usuarioActualizado.getRol().getId()));
-            usuario.setRol(rol);
+        usuario.setNombre(usuarioActualizado.getNombre());
+        usuario.setApellido(usuarioActualizado.getApellido());
+        usuario.setCorreo(usuarioActualizado.getCorreo());
+        usuario.setClave(usuarioActualizado.getClave());
 
-            usuarioRepository.save(usuario);
-            
+        // Validación para evitar NullPointerException
+        if (usuarioActualizado.getRol() == null || usuarioActualizado.getRol().getId() == null) {
+            throw new RuntimeException("El Rol o su ID no pueden ser nulos.");
         }
-        return optionalUsuario;
-           
-        }
+
+        Rol rol = rolRepository.findById(usuarioActualizado.getRol().getId())
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado con ID: " + usuarioActualizado.getRol().getId()));
+
+        usuario.setRol(rol);
+
+        usuarioRepository.save(usuario);
+    }
+
+    return optionalUsuario;
+}
+
     }
 
 
