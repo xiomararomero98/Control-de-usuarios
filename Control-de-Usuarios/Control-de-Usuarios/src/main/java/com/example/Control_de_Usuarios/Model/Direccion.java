@@ -1,5 +1,8 @@
 package com.example.Control_de_Usuarios.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +42,7 @@ public class Direccion {
 
     @ManyToOne
     @JoinColumn(name = "Usuarios_id_usuarios", nullable = false)
+    @JsonBackReference
     private Usuario usuario;
 
     @ManyToOne
