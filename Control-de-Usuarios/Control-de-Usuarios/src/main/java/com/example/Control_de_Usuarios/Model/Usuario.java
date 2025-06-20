@@ -3,7 +3,7 @@ package com.example.Control_de_Usuarios.Model;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -51,10 +51,10 @@ public class Usuario {
 
     @ManyToOne
     @JoinColumn(name = "Rol_id_rol", nullable = false)
-    @JsonIgnoreProperties("usuarios")
+    @JsonBackReference("rol-usuarios")
     private Rol rol;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("usuario-direcciones")
     private List<Direccion> direcciones;
 }

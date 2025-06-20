@@ -9,11 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.Control_de_Usuarios.Model.Rol;
 import com.example.Control_de_Usuarios.Model.Usuario;
-import com.example.Control_de_Usuarios.Repository.ComunaRepository;
-import com.example.Control_de_Usuarios.Repository.DireccionRepository;
-import com.example.Control_de_Usuarios.Repository.PermisosRepository;
-import com.example.Control_de_Usuarios.Repository.PrivilegiosRepository;
-import com.example.Control_de_Usuarios.Repository.RegionRepository;
 import com.example.Control_de_Usuarios.Repository.RolRepository;
 import com.example.Control_de_Usuarios.Repository.UsuarioRepository;
 
@@ -28,22 +23,6 @@ public class UsuarioService {
 
     @Autowired
     private RolRepository rolRepository;
-
-    @Autowired
-    private PrivilegiosRepository privilegiosRepository;
-
-    @Autowired
-    private PermisosRepository permisosRepository;
-
-    @Autowired
-    private DireccionRepository direccionRepository;
-
-    @Autowired
-    private ComunaRepository comunaRepository;
-
-    @Autowired
-    private RegionRepository regionRepository;
-
 
     //Obtener todos los usuarios 
 

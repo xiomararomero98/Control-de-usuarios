@@ -67,7 +67,7 @@ public class UsuarioController {
     }
 
     //actualizar un usuario
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "application/json")
     public ResponseEntity<?>actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado){
         try {
              Optional <Usuario> usuario =usuarioService.actualizarUsuario(id, usuarioActualizado);

@@ -36,11 +36,11 @@ public class Comuna {
 
     @ManyToOne
     @JoinColumn(name = "Region_id_region", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("region-comunas")
     private Region region;
 
     @OneToMany(mappedBy = "comuna")
-    @JsonManagedReference
+    @JsonManagedReference("comuna-direcciones")
     private List<Direccion> direcciones;
 
 }

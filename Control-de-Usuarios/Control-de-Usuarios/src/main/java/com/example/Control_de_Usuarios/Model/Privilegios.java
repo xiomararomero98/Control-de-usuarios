@@ -33,7 +33,7 @@ public class Privilegios {
     private String nombre;
 
     @OneToMany(mappedBy = "privilegio")
-    @JsonManagedReference
+    @JsonManagedReference("privilegio-permisos")
     private List <Permisos> permisosList;
 
 }

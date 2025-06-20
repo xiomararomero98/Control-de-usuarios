@@ -37,13 +37,13 @@ public class Rol {
 
     //identificar relacion con usuarios
     @OneToMany(mappedBy = "rol", cascade =CascadeType.ALL)
-    @JsonIgnore
+    @JsonManagedReference("rol-usuarios")
     private List <Usuario> users;
 
     //identificar relacion con permisos
 
     @OneToMany(mappedBy = "rol", cascade =CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("rol-permisos")
     private List <Permisos> permisos;
 
     //carga de datos
