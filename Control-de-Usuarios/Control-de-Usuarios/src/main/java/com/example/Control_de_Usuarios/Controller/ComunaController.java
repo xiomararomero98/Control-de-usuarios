@@ -55,14 +55,15 @@ public class ComunaController {
     //crear nueva comuna
     @PostMapping
     public ResponseEntity<?> crearComuna(@RequestBody Comuna comuna){
-        try {
-            Long idRegion= comuna.getRegion().getId();
-            Comuna nueva = comunaService.crearComuna(comuna.getNombre(), idRegion);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    try {
+        System.out.println("➡️ Nombre recibido: " + comuna.getNombre());
+        Long idRegion= comuna.getRegion().getId();
+        Comuna nueva = comunaService.crearComuna(comuna.getNombre(), idRegion);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
+}
 
     //Actualizar comuna
     @PutMapping("/{id}")
