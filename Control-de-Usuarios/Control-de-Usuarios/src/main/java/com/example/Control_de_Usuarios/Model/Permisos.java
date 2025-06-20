@@ -1,5 +1,9 @@
 package com.example.Control_de_Usuarios.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,9 +31,11 @@ public class Permisos {
 
     @ManyToOne
     @JoinColumn(name = "Privilegios_id_privilegios", nullable = false)
+    @JsonIgnoreProperties("permisosList")
     private Privilegios privilegio;
 
     @ManyToOne
     @JoinColumn(name = "Rol_id_rol", nullable = false)
+    @JsonIgnore
     private Rol rol;
 }

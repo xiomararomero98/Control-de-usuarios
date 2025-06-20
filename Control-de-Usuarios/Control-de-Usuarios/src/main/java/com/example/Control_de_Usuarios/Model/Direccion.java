@@ -23,15 +23,15 @@ import lombok.NoArgsConstructor;
 public class Direccion {
 
 
-    @Id
+ @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_direccion")
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String calle;
 
-    @Column
+    @Column(nullable = false)
     private Integer numeracion;
 
     @Column

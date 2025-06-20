@@ -1,6 +1,8 @@
 package com.example.Control_de_Usuarios.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -41,7 +43,7 @@ public class Rol {
     //identificar relacion con permisos
 
     @OneToMany(mappedBy = "rol", cascade =CascadeType.ALL)
-    @JsonIgnore
+    @JsonManagedReference
     private List <Permisos> permisos;
 
     //carga de datos

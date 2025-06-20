@@ -7,5 +7,6 @@ import com.example.Control_de_Usuarios.Model.Region;
 
 @Repository
 public interface RegionRepository extends JpaRepository<Region,Long> {
+    Region findByNombre(String nombre);
 
 }

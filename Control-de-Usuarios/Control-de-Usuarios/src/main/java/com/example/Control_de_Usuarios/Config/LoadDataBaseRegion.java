@@ -3,11 +3,13 @@ package com.example.Control_de_Usuarios.Config;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import com.example.Control_de_Usuarios.Model.Region;
 import com.example.Control_de_Usuarios.Repository.RegionRepository;
 
 @Configuration
+@Order(1)
 public class LoadDataBaseRegion {
 
     @Bean

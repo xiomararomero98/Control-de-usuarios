@@ -2,6 +2,8 @@ package com.example.Control_de_Usuarios.Model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -34,6 +36,7 @@ public class Comuna {
 
     @ManyToOne
     @JoinColumn(name = "Region_id_region", nullable = false)
+    @JsonBackReference
     private Region region;
 
     @OneToMany(mappedBy = "comuna")

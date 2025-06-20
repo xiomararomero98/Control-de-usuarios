@@ -3,6 +3,7 @@ package com.example.Control_de_Usuarios.Model;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -28,34 +29,32 @@ import lombok.NoArgsConstructor;
 @Data
 public class Usuario {
 
-    @Id
+ @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuarios")
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String nombre;
 
-    @Column
+    @Column(nullable = false)
     private String apellido;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String correo;
 
-    @Column
+    @Column(nullable = false)
     private String clave;
 
     @Column(name = "fecha_creacion", nullable = false)
     private Date fecha_creacion;
 
-    // Relación con Rol (Muchos usuarios pueden tener un Rol)
     @ManyToOne
-    @JoinColumn(name = "Rol_id_rol")
-    @JsonIgnoreProperties("usuarios") // Esto evita que al serializar el usuario, el rol intente devolver la lista de usuarios
+    @JoinColumn(name = "Rol_id_rol", nullable = false)
+    @JsonIgnoreProperties("usuarios")
     private Rol rol;
 
-    // Relación con Direccion (Un usuario puede tener muchas direcciones)
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonManagedReference // Esto maneja la relación para evitar ciclos al serializar
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Direccion> direcciones;
 }
