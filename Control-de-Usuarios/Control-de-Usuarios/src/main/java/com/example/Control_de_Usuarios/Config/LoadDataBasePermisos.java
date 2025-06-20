@@ -13,7 +13,7 @@ import com.example.Control_de_Usuarios.Repository.PrivilegiosRepository;
 import com.example.Control_de_Usuarios.Repository.RolRepository;
 
 @Configuration
-@Order(6)
+@Order(4)
 public class LoadDataBasePermisos {
 
     @Bean

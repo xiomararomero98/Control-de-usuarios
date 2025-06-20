@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Configuration
-@Order(5)
+@Order(6)
 public class LoadDataBaseUsuarios {
 
     @Bean
