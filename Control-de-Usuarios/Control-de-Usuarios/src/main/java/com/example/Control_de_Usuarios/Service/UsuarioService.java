@@ -41,22 +41,19 @@ public class UsuarioService {
     //metodo para agregar un Usuario
 
     public Usuario crearUsuario(String nombre, String apellido, String correo, String clave, Long idRol){
+    Rol rol = rolRepository.findById(idRol)
+        .orElseThrow(() -> new RuntimeException("Rol no existe con ID:" + idRol));
 
-        Rol rol =rolRepository.findById(idRol)
-        .orElseThrow(()->new RuntimeException("Rol no existe con ID:"+ idRol));
+    Usuario usuario = new Usuario();
+    usuario.setNombre(nombre);
+    usuario.setApellido(apellido);
+    usuario.setCorreo(correo);
+    usuario.setClave(Encriptador.encriptar(clave));// 🔐 Aquí encriptamos
+    usuario.setRol(rol);
+    usuario.setFecha_creacion(new Date());
 
-        Usuario usuario = new Usuario();
-        
-        usuario.setNombre(nombre);
-        usuario.setApellido(apellido);
-        usuario.setClave(clave);
-        usuario.setCorreo(correo);
-        usuario.setRol(rol);
-        usuario.setFecha_creacion(new Date()); //fecha de creacion actual
-
-        return usuarioRepository.save(usuario);
-
-    }
+    return usuarioRepository.save(usuario);
+}
 
     //Eliminar usuario por Id 
 
