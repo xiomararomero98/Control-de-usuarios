@@ -9,7 +9,7 @@ import com.example.Control_de_Usuarios.Model.Privilegios;
 import com.example.Control_de_Usuarios.Repository.PrivilegiosRepository;
 
 @Configuration
-@Order(3)
+@Order(4)
 public class LoadDataBasePrivilegios {
 
     @Bean

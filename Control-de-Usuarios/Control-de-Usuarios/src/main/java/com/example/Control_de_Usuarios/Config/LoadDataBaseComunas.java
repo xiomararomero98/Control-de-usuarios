@@ -11,7 +11,7 @@ import com.example.Control_de_Usuarios.Repository.ComunaRepository;
 import com.example.Control_de_Usuarios.Repository.RegionRepository;
 
 @Configuration
-@Order(5)
+@Order(2)
 public class LoadDataBaseComunas {
     @Bean
     CommandLineRunner initComunaDataBase(ComunaRepository comunaRepository, RegionRepository regionRepository) {
