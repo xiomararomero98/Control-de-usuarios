@@ -90,5 +90,12 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/correo/{correo}")
+    public ResponseEntity<Usuario> getUsuarioPorCorreo(@PathVariable String correo) {
+    Optional<Usuario> usuario = usuarioService.findByCorreo(correo);
+    return usuario.map(ResponseEntity::ok)
+                  .orElseGet(() -> ResponseEntity.notFound().build());
+}
+
 
 }

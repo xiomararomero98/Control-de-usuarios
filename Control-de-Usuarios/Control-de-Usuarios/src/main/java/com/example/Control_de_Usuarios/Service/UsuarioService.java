@@ -24,6 +24,11 @@ public class UsuarioService {
     @Autowired
     private RolRepository rolRepository;
 
+  //Obtener correo
+    public Optional<Usuario> findByCorreo(String correo) {
+    return usuarioRepository.findByCorreo(correo);
+    }
+
     //Obtener todos los usuarios 
 
     public List<Usuario> obtenerUsuarios(){

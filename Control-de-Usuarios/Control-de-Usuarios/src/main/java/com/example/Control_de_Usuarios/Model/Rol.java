@@ -1,9 +1,6 @@
 package com.example.Control_de_Usuarios.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,13 +34,13 @@ public class Rol {
 
     //identificar relacion con usuarios
     @OneToMany(mappedBy = "rol", cascade =CascadeType.ALL)
-    @JsonManagedReference("rol-usuarios")
+    @JsonIgnoreProperties("rol")
     private List <Usuario> users;
 
     //identificar relacion con permisos
 
     @OneToMany(mappedBy = "rol", cascade =CascadeType.ALL)
-    @JsonManagedReference("rol-permisos")
+    @JsonIgnoreProperties("rol")
     private List <Permisos> permisos;
 
     //carga de datos
