@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +54,8 @@ public class PermisosController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPermiso);
     }
 
+
+    @PutMapping("/{id}")
     public ResponseEntity<?> actualizarPermiso(@PathVariable Long id, @RequestBody Permisos permisoActualizado){
         try {
             Permisos actualizado= permisosService.actualizarPermiso(id, permisoActualizado);
@@ -61,11 +65,15 @@ public class PermisosController {
         }
     }
 
-    //eliminar Permiso
-    public ResponseEntity<Void> eliminarPermiso(@PathVariable Long id){
+@DeleteMapping("/{id}")
+public ResponseEntity<?> eliminarPermiso(@PathVariable Long id){
+    try {
         permisosService.eliminarPermisoPorId(id);
         return ResponseEntity.noContent().build();
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
+}
 
 
 }
