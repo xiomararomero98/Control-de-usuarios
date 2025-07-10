@@ -23,21 +23,17 @@ public class ComunaService {
     @Autowired
     private RegionRepository regionRepository;
 
-    //obtener todas las comunas 
-    public List<Comuna> obtenerTodasLasComunas(){
+    public List<Comuna> obtenerTodasLasComunas() {
         return comunaRepository.findAll();
     }
 
-    //Obtener comuna por Id
-    public Optional<Comuna> obtenerComunaPorId(Long id){
+    public Optional<Comuna> obtenerComunaPorId(Long id) {
         return comunaRepository.findById(id);
     }
 
-    //Crear comuna
-    
-    public Comuna crearComuna(String nombre, Long idRegion){
+    public Comuna crearComuna(String nombre, Long idRegion) {
         Region region = regionRepository.findById(idRegion)
-        .orElseThrow(() -> new RuntimeException("Region no encontrada con ID:"+ idRegion));
+                .orElseThrow(() -> new RuntimeException("Región no encontrada con ID: " + idRegion));
 
         Comuna comuna = new Comuna();
         comuna.setNombre(nombre);
@@ -45,28 +41,26 @@ public class ComunaService {
         return comunaRepository.save(comuna);
     }
 
-    //eliminar Comuna
+    public Comuna actualizarComuna(Long id, Comuna comunaActualizada) {
+        Comuna existente = comunaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comuna no encontrada con ID: " + id));
 
-    public void eliminarComunapoId(Long id){
+        if (comunaActualizada.getRegion() == null || comunaActualizada.getRegion().getId() == null) {
+            throw new RuntimeException("Debe incluir una región válida para actualizar la comuna");
+        }
+
+        Region region = regionRepository.findById(comunaActualizada.getRegion().getId())
+                .orElseThrow(() -> new RuntimeException("Región no encontrada con ID: " + comunaActualizada.getRegion().getId()));
+
+        existente.setNombre(comunaActualizada.getNombre());
+        existente.setRegion(region);
+        return comunaRepository.save(existente);
+    }
+
+    public void eliminarComunaPorId(Long id) {
+        if (!comunaRepository.existsById(id)) {
+            throw new RuntimeException("Comuna no encontrada con ID: " + id);
+        }
         comunaRepository.deleteById(id);
     }
-
-    //Actualizar comuna 
-
-    public Comuna actualizarComuna(Long id, Comuna comunaActualizada){
-        Optional <Comuna> optionalComuna = comunaRepository.findById(id);
-        if (optionalComuna.isPresent()) {
-            Comuna comunaExistente = optionalComuna.get();
-            comunaExistente.setNombre(comunaActualizada.getNombre());
-            comunaExistente.setRegion(comunaActualizada.getRegion());
-            return comunaRepository.save(comunaExistente);
-            
-        } else {
-            throw new RuntimeException("Comuna no encontrada con ID:"+id);
-            
-        }
-    }
-
-
-
 }

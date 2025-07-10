@@ -6,17 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.Control_de_Usuarios.Model.Privilegios;
 import com.example.Control_de_Usuarios.Service.PrivilegiosService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/v1/privilegios")
@@ -25,21 +22,27 @@ public class PrivilegiosController {
     @Autowired
     private PrivilegiosService privilegiosService;
 
-    //obtener todos los privilegios
-
+    @Operation(summary = "Obtener todos los privilegios", description = "Retorna una lista de todos los privilegios registrados.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de privilegios obtenida exitosamente"),
+        @ApiResponse(responseCode = "204", description = "No hay privilegios registrados")
+    })
     @GetMapping
-    public ResponseEntity<List<Privilegios>> obtenerPrivilegios(){
+    public ResponseEntity<List<Privilegios>> obtenerPrivilegios() {
         List<Privilegios> lista = privilegiosService.obtenerPrivilegios();
         if (lista.isEmpty()) {
             return ResponseEntity.noContent().build();
-            
         }
         return ResponseEntity.ok(lista);
     }
-    
-    //obtener privilegio por ID
+
+    @Operation(summary = "Obtener privilegio por ID", description = "Retorna un privilegio según su ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Privilegio encontrado"),
+        @ApiResponse(responseCode = "404", description = "Privilegio no encontrado")
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<Privilegios> obtenerPrivilegioPorId(@PathVariable Long id){
+    public ResponseEntity<Privilegios> obtenerPrivilegioPorId(@PathVariable Long id) {
         Optional<Privilegios> privilegio = privilegiosService.obtenerPrivilegioPorId(id);
         if (privilegio.isPresent()) {
             return ResponseEntity.ok(privilegio.get());
@@ -48,32 +51,40 @@ public class PrivilegiosController {
         }
     }
 
-    //crear nuevo privilegio
+    @Operation(summary = "Crear un nuevo privilegio", description = "Permite crear un nuevo privilegio.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Privilegio creado exitosamente"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos para crear el privilegio")
+    })
     @PostMapping
-    public ResponseEntity<Privilegios> crearPrivilegios(@RequestBody Privilegios privilegio){
+    public ResponseEntity<Privilegios> crearPrivilegios(@RequestBody Privilegios privilegio) {
         Privilegios nuevo = privilegiosService.creaPrivilegio(privilegio);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
-    //Actualizar privilegio
-
+    @Operation(summary = "Actualizar un privilegio", description = "Permite actualizar un privilegio existente por su ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Privilegio actualizado exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Privilegio no encontrado")
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarPrivilegios(@PathVariable Long id, @RequestBody Privilegios privilegioActualizado){
+    public ResponseEntity<?> actualizarPrivilegios(@PathVariable Long id, @RequestBody Privilegios privilegioActualizado) {
         try {
-            Privilegios actualizado= privilegiosService.actualizarPrivilegio(id, privilegioActualizado);
+            Privilegios actualizado = privilegiosService.actualizarPrivilegio(id, privilegioActualizado);
             return ResponseEntity.ok(actualizado);
         } catch (RuntimeException e) {
-             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    //eliminar privilegio
+    @Operation(summary = "Eliminar un privilegio", description = "Elimina un privilegio según su ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Privilegio eliminado exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Privilegio no encontrado")
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPrivilegio(@PathVariable Long id ){
+    public ResponseEntity<Void> eliminarPrivilegio(@PathVariable Long id) {
         privilegiosService.eliminarPrivilegio(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
 }

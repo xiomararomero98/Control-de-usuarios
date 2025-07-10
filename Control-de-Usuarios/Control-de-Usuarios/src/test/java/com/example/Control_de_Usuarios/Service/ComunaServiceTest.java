@@ -76,7 +76,7 @@ public class ComunaServiceTest {
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> comunaService.crearComuna("Santiago", 1L));
 
-        assertEquals("Region no encontrada con ID:1", exception.getMessage());
+        assertEquals("Región no encontrada con ID: 1", exception.getMessage());
     }
 
     @Test
@@ -86,6 +86,7 @@ public class ComunaServiceTest {
         Comuna actualizada = new Comuna(1L, "Nuevo", region, new ArrayList<>());
 
         when(comunaRepository.findById(1L)).thenReturn(Optional.of(existente));
+        when(regionRepository.findById(1L)).thenReturn(Optional.of(region));
         when(comunaRepository.save(any(Comuna.class))).thenReturn(actualizada);
 
         Comuna resultado = comunaService.actualizarComuna(1L, actualizada);
@@ -101,15 +102,26 @@ public class ComunaServiceTest {
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> comunaService.actualizarComuna(1L, new Comuna()));
 
-        assertEquals("Comuna no encontrada con ID:1", exception.getMessage());
+        assertEquals("Comuna no encontrada con ID: 1", exception.getMessage());
     }
 
     @Test
-    public void testEliminarComunaPorId() {
+    public void testEliminarComunaPorId_Existente() {
+        when(comunaRepository.existsById(1L)).thenReturn(true);
         doNothing().when(comunaRepository).deleteById(1L);
 
-        comunaService.eliminarComunapoId(1L);
+        comunaService.eliminarComunaPorId(1L);
 
         verify(comunaRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    public void testEliminarComunaPorId_NoExistente() {
+        when(comunaRepository.existsById(1L)).thenReturn(false);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> comunaService.eliminarComunaPorId(1L));
+
+        assertEquals("Comuna no encontrada con ID: 1", exception.getMessage());
     }
 }

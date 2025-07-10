@@ -2,6 +2,7 @@ package com.example.Control_de_Usuarios.Model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,7 +37,7 @@ public class Region {
 
     //identificar relacion con comunas
     @OneToMany(mappedBy = "region")
-    @JsonManagedReference("region-comunas")
+    @JsonIgnoreProperties("region")
     @Schema(description = "Lista de comunas asociadas a la región")
     private List<Comuna> comunas;
 

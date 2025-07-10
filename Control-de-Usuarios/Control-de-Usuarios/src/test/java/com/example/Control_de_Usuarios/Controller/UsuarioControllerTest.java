@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 
@@ -24,6 +25,7 @@ import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @WebMvcTest(UsuarioController.class)
 @ExtendWith(SpringExtension.class)
@@ -60,6 +62,7 @@ public class UsuarioControllerTest {
                 .andExpect(jsonPath("$.nombre").value("Juan"));
     }
 
+    
     @Test
     void crearUsuario_retornaUsuarioCreado() throws Exception {
         Rol rol = new Rol(1L, "ADMIN");
@@ -74,6 +77,7 @@ public class UsuarioControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(2));
     }
+
 
     @Test
     void actualizarUsuario_usuarioExiste() throws Exception {
@@ -108,5 +112,21 @@ public class UsuarioControllerTest {
         mockMvc.perform(get("/api/v1/usuarios/correo/sofia@test.com"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.correo").value("sofia@test.com"));
+    }
+
+    @Test
+    void obtenerUsuarioPorId_usuarioNoExiste() throws Exception {
+        when(usuarioService.obtenerUsuarioPorId(99L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/v1/usuarios/99"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void obtenerUsuarioPorCorreo_usuarioNoExiste() throws Exception {
+        when(usuarioService.findByCorreo("desconocido@test.com")).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/v1/usuarios/correo/desconocido@test.com"))
+                .andExpect(status().isNotFound());
     }
 }

@@ -144,7 +144,7 @@ public class ComunaControllerTest {
 
     @Test
     void testEliminarComuna_error() throws Exception {
-        Mockito.doThrow(new RuntimeException("Error al eliminar comuna")).when(comunaService).eliminarComunapoId(1L);
+        Mockito.doThrow(new RuntimeException("Error al eliminar comuna")).when(comunaService).eliminarComunaPorId(1L);
 
         mockMvc.perform(delete("/api/v1/comunas/1"))
                 .andExpect(status().isNotFound())
